@@ -5,7 +5,7 @@
 
 - Switch Design:
 
-
+Pictures/Switch Design.PNG
 
 - 2-Bit DAC Design:
 
