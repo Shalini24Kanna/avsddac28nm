@@ -31,4 +31,4 @@
 
 ![3-Bit DAC Design Output](https://github.com/Shalini24Kanna/avsddac28nm/blob/main/Pictures/3-Bit%20design%20Simulation%20error.PNG)
 
-
+![8-Bit DAC Design Output](https://github.com/Shalini24Kanna/avsddac28nm/blob/main/Pictures/8-Bit%20DAC%20Output.PNG)
