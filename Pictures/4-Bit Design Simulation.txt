@@ -1,0 +1,117 @@
+*  Generated for: PrimeSim
+*  Design library name: DAC_design
+*  Design cell name: 4Bit_Design_Sim
+*  Design view name: schematic
+.option search='/home/skandha/Tools_SNPS/Downloads_temp/SAED32nm_PDK_09302020/hspice'
+
+
+.option PARHIER = LOCAL
+.option PORT_VOLTAGE_SCALE_TO_2X = 1
+.option RUNLVL = 3
+
+.option WDF=1
+.temp 25
+.lib 'saed32nm.lib' TT
+
+*Custom Compiler Version S-2021.09-SP2
+*Sun Apr 24 09:44:27 2022
+
+.global gnd!
+********************************************************************************
+* Library          : DAC_design
+* Cell             : switch_design
+* View             : schematic
+* View Search List : hspice hspiceD schematic spice veriloga
+* View Stop List   : hspice hspiceD
+********************************************************************************
+.subckt switch_design d_in vdda vout vssa vrefh vrefl
+xm5 vout net24 vrefl vssa n105_hvt w=0.1u l=0.03u nf=1 m=1
+xm7 vrefh net33 vout vssa n105_hvt w=0.1u l=0.03u nf=1 m=1
+xm0 net24 d_in vssa vssa n105_hvt w=0.1u l=0.03u nf=1 m=1
+xm2 net33 net24 vssa vssa n105_hvt w=0.1u l=0.03u nf=1 m=1
+xm6 vrefl net33 vout vdda p105_hvt w=0.1u l=0.03u nf=1 m=1
+xm4 vout net24 vrefh vdda p105_hvt w=0.1u l=0.03u nf=1 m=1
+xm3 net33 net24 vdda vdda p105_hvt w=0.1u l=0.03u nf=1 m=1
+xm1 net24 d_in vdda vdda p105_hvt w=0.1u l=0.03u nf=1 m=1
+.ends switch_design
+
+********************************************************************************
+* Library          : DAC_design
+* Cell             : 2Bit_design
+* View             : schematic
+* View Search List : hspice hspiceD schematic spice veriloga
+* View Stop List   : hspice hspiceD
+********************************************************************************
+.subckt _2bit_design d0 d1 vdda vout vssa vrefh vrefl
+xi2 d0 vdda net13 vssa net23 net25 switch_design
+xi1 d1 vdda vout vssa net10 net13 switch_design
+xi0 d0 vdda net10 vssa vrefh net21 switch_design
+r6 net25 vrefl r=200
+r5 net23 net25 r=200
+r4 net21 net23 r=200
+r3 vrefh net21 r=200
+.ends _2bit_design
+
+********************************************************************************
+* Library          : DAC_design
+* Cell             : 3Bit_design
+* View             : schematic
+* View Search List : hspice hspiceD schematic spice veriloga
+* View Stop List   : hspice hspiceD
+********************************************************************************
+.subckt _3bit_design d0 d1 d2 vdda vout vssa vrefh vrefl
+xi1 d0 d1 vdda net19 vssa net21 vrefl _2bit_design
+xi0 d0 d1 vdda net18 vssa vrefh net21 _2bit_design
+xi2 d2 vdda vout vssa net18 net19 switch_design
+.ends _3bit_design
+
+********************************************************************************
+* Library          : DAC_design
+* Cell             : 4Bit_design
+* View             : schematic
+* View Search List : hspice hspiceD schematic spice veriloga
+* View Stop List   : hspice hspiceD
+********************************************************************************
+.subckt _4bit_design d0 d1 d2 d3 vdda vout vssa vrefh vrefl
+xi1 d0 d1 d2 vdda net21 vssa net12 vrefl _3bit_design
+xi0 d0 d1 d2 vdda net20 vssa vrefh net12 _3bit_design
+xi2 d3 vdda vout vssa net20 net21 switch_design
+.ends _4bit_design
+
+********************************************************************************
+* Library          : DAC_design
+* Cell             : 4Bit_Design_Sim
+* View             : schematic
+* View Search List : hspice hspiceD schematic spice veriloga
+* View Stop List   : hspice hspiceD
+********************************************************************************
+xi0 d0 d1 d2 d3 vdda vout gnd! vrefh gnd! _4bit_design
+v4 d3 gnd! dc=0 pulse ( 1.05 0 1n 1n 1n 80u 160u )
+v3 d2 gnd! dc=0 pulse ( 1.05 0 1n 1n 1n 40u 80u )
+v2 d1 gnd! dc=0 pulse ( 1.05 0 1n 1n 1n 20u 40u )
+v1 d0 gnd! dc=0 pulse ( 1.05 0 1n 1n 1n 10u 20u )
+v6 vdda gnd! dc=1.8
+v5 vrefh gnd! dc=1
+c16 vout gnd! c=1p
+
+
+
+
+
+
+
+
+
+
+.tran 1u 160u start=0
+.option opfile=1 split_dp=1
+.option probe=1
+.probe tran v(*) level=1
+.probe tran v(d0) v(d1) v(d2) v(d3) v(vdda) v(vout) v(vrefh)
+
+
+
+
+
+.end
+
